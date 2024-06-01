@@ -21,7 +21,7 @@
                             :items="allTrackCourier"></v-combobox>
                         <v-btn type="submit" color="primary">Cek</v-btn>
                     </v-form>
-                    <div class="mt-4"> 
+                    <!-- <div class="mt-4"> 
                         <v-col>
                             Jumlah Paket yang pernah di cek : {{ remainingQuota }}
                         </v-col>
@@ -33,7 +33,7 @@
                                 </template>
                             </v-tooltip>
                         </v-col>
-                    </div>
+                    </div> -->
                     <div v-if="error" class="mt-4">
                         <v-alert type="error">{{ error }}</v-alert>
                     </div>
@@ -242,7 +242,7 @@ const checkPackage = async () => {
         const data = await response.json();
         packageInfo.value = data;
         overlay.value = false;
-        await checkQuota();
+        // await checkQuota();
     } catch (err) {
         error.value = err.message || 'Terjadi kesalahan saat mengambil data';
         overlay.value = false;
@@ -264,10 +264,10 @@ const checkQuota = async () => {
     }
 };
 
-onMounted(async () => {
-    await checkQuota();
-});
-</script>
+// onMounted(async () => {
+//     await checkQuota();
+// });
+// </script>
 
 
 <style>
