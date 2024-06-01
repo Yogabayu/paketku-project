@@ -5,10 +5,11 @@
         Loading...
     </v-overlay>
     <v-container class="fill-height">
+
         <v-responsive :aspect-ratio="16 / 9" class="border pa-4">
             <v-card>
                 <v-card-title>
-                    Cek Paket <v-icon icon="fas fa-box"></v-icon>
+                    Cek Paket <v-icon icon="fas fa-box" size="x-small"></v-icon>
                 </v-card-title>
                 <v-card-subtitle>
                     Silahkan masukkan nomor resi dan klik Cek
@@ -20,81 +21,110 @@
                             :items="allTrackCourier"></v-combobox>
                         <v-btn type="submit" color="primary">Cek</v-btn>
                     </v-form>
-                    <div v-if="packageInfo">
-                        <v-alert type="info">
-                            <div><strong>Status:</strong> {{ packageInfo.status }}</div>
-                            <div><strong>Lokasi:</strong> {{ packageInfo.location }}</div>
-                            <div><strong>Waktu:</strong> {{ packageInfo.timestamp }}</div>
-                        </v-alert>
+                    <div class="mt-4"> 
+                        <v-col>
+                            Jumlah Paket yang pernah di cek : {{ remainingQuota }}
+                        </v-col>
+                        <v-col>
+                            Sisa paket pengecekan : {{totalChecked}}
+                            <v-tooltip text="Jumlah kuota paket, jika bernilai 0 maka aplikasi tidak dapat digunakan">
+                                <template v-slot:activator="{ props }">
+                                    <v-icon icon="fas fa-question" size="x-small" v-bind="props"></v-icon>
+                                </template>
+                            </v-tooltip>
+                        </v-col>
                     </div>
                     <div v-if="error" class="mt-4">
                         <v-alert type="error">{{ error }}</v-alert>
                     </div>
                 </v-card-text>
             </v-card>
-            <v-card class="my-2">
+            <v-card class="my-2" v-if="!error && packageInfo">
                 <v-card-title class="text-overline">
                     Summary
-                    <div class="text-green-darken-3 text-h3 font-weight-bold">Delivered</div>
+                    <div class="text-green-darken-3 text-h3 font-weight-bold">{{ packageInfo.data.summary.status }}
+                    </div>
 
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
                     <v-alert type="info">
-                        <v-row>
-                            <v-col cols="12">
-                                <span>Detail</span>
-                            </v-col>
-                            <v-col cols="12" md="4">
-                                <strong>No.resi:</strong> sasas
-                            </v-col>
-                            <v-col cols="12" md="4">
-                                <strong>Jasa Kirim:</strong> asas
-                            </v-col>
-                            <v-col cols="12" md="4">
-                                <strong>Tanggal:</strong> sasasas
-                            </v-col>
-                            <v-col cols="12" md="4">
-                                <strong>Jenis:</strong> sasas
-                            </v-col>
-                            <v-col cols="12" md="4">
-                                <strong>Berat:</strong> asasas
-                            </v-col>
-                        </v-row>
+                        <v-simple-table class="detail-table">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">
+                                        <h2> Detail </h2>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>No.resi</strong></td>
+                                    <td>:</td>
+                                    <td>{{ packageInfo.data.summary.awb }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Jasa Kirim</strong></td>
+                                    <td>:</td>
+                                    <td>{{ packageInfo.data.summary.courier }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tanggal</strong></td>
+                                    <td>:</td>
+                                    <td>{{ packageInfo.data.summary.date ? packageInfo.data.summary.date : '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Jenis</strong></td>
+                                    <td>:</td>
+                                    <td>{{ packageInfo.data.summary.service }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Berat</strong></td>
+                                    <td>:</td>
+                                    <td>{{ packageInfo.data.summary.weight }}</td>
+                                </tr>
+                            </tbody>
+                        </v-simple-table>
+
                     </v-alert>
                 </v-card-text>
 
             </v-card>
-            <v-card class="mx-auto my-2">
+            <v-card class="mx-auto my-2" v-if="!error && packageInfo">
                 <v-card-text>
                     <div class="font-weight-bold ms-1 mb-2">Today</div>
 
                     <v-timeline align="start" density="compact">
-                        <v-timeline-item v-for="message in messages" :key="message.time" :dot-color="message.color"
-                            size="x-small">
+                        <v-timeline-item v-for="(message, index) in packageInfo.data.history" :key="message.date"
+                            :dot-color="index === 0 ? 'yellow' : 'green'" size="x-small">
                             <div class="mb-4">
                                 <div class="font-weight-normal">
-                                    <strong>{{ message.from }}</strong> @{{ message.time }}
+                                    <strong>{{ message.date }}</strong>
                                 </div>
 
-                                <div>{{ message.message }}</div>
+                                <div>{{ message.desc }}</div>
                             </div>
                         </v-timeline-item>
                     </v-timeline>
                 </v-card-text>
             </v-card>
+
         </v-responsive>
     </v-container>
+
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+// import { green } from 'vuetify/util/colors';
 
 const trackingNumber = ref('');
 const overlay = ref(false);
 const trackingCourier = ref('');
-const apiKey = ref('7de29e329de36eba956b7b53e85d1ec663bc04449a1a2d2fefcccc4641257312');
+const apiKey = ref('7de29e329de36eba956b7b53e85d1ec663bc04449a1a2d2fefcccc4641257312ybap');
 const packageInfo = ref(null);
+const remainingQuota = ref(null);
+const totalChecked = ref(null);
 const error = ref('');
 const allTrackCourier = [
     {
@@ -187,28 +217,9 @@ const allTrackCourier = [
     },
 ];
 
-const messages = [
-    {
-        from: 'You',
-        message: `Sure, I'll see you later.`,
-        time: '10:42am',
-        color: 'deep-purple-lighten-1',
-    },
-    {
-        from: 'John Doe',
-        message: 'Yeah, sure. Does 1:00pm work?',
-        time: '10:37am',
-        color: 'green',
-    },
-    {
-        from: 'You',
-        message: 'Did you still want to grab lunch today?',
-        time: '9:47am',
-        color: 'deep-purple-lighten-1',
-    },
-];
-
 const checkPackage = async () => {
+    packageInfo.value = null;
+    error.value = '';
     overlay.value = true;
     if (!trackingNumber.value) {
         error.value = 'Nomor resi tidak boleh kosong';
@@ -220,22 +231,47 @@ const checkPackage = async () => {
         overlay.value = false
         return;
     }
-    error.value = '';
-    overlay.value = false;
 
-    // try {
-    // //   const response = await fetch(`https://api.example.com/track?number=${trackingNumber.value}`);
-    //   const response = await fetch(`https://api.binderbyte.com/v1/track?api_key=${apiKey.value}&courier=${trackingCourier.value.value}&awb=${trackingNumber.value}`);
-    //   if (!response.ok) {
-    //     throw new Error('Gagal mengambil data paket');
-    //   }
-    //   const data = await response.json();
-    // //   packageInfo.value = data;
-    //   console.log(data);
-    // } catch (err) {
-    //   error.value = err.message || 'Terjadi kesalahan saat mengambil data';
-    // } finally {
-    //   loading.value = false;
-    // }
+    try {
+        const response = await fetch(`https://api.binderbyte.com/v1/track?api_key=${apiKey.value}&courier=${trackingCourier.value.value}&awb=${trackingNumber.value}`);
+        if (response.status == 400) {
+            error.value = 'Data not found';
+            overlay.value = false;
+            return;
+        }
+        const data = await response.json();
+        packageInfo.value = data;
+        overlay.value = false;
+        await checkQuota();
+    } catch (err) {
+        error.value = err.message || 'Terjadi kesalahan saat mengambil data';
+        overlay.value = false;
+    } finally {
+        overlay.value = false;
+    }
 };
+
+const checkQuota = async () => {
+    try {
+        const response = await fetch(`https://api.binderbyte.com/v1/checkQuota?api_key=${apiKey.value}`);
+        const accData = await response.json();
+        remainingQuota.value = Math.round(accData[0].balance / accData[0].price);
+        totalChecked.value = accData[0].count;
+    } catch (err) {
+        error.value = err.message || 'Terjadi kesalahan saat mengambil data';
+    } finally {
+        overlay.value = false;
+    }
+};
+
+onMounted(async () => {
+    await checkQuota();
+});
 </script>
+
+
+<style>
+.detail-table td {
+    padding: 10px;
+}
+</style>

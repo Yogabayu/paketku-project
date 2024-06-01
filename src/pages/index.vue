@@ -9,14 +9,15 @@
             </template>
 
             <template #title>
-              <h2 class="text-h5 font-weight-bold">Get started <v-icon
-                  :icon="theme.global.current.value.dark ? 'fas fa-moon' : 'fas fa-sun'" @click="toggleTheme" size="25"
-                  title="toggle theme" /> </h2>
+              <h2 class="text-h5 font-weight-bold">Get started </h2>
             </template>
 
             <template #text>
               <div class="text-subtitle-1">
                 Jelajahi aplikasi yang berguna bagi manusia
+              </div>
+              <div class="text-subtitle-1">
+                Menyukai Aplikasi ini ? donasi yuk di <a href="http://saweria.co/yogabayuap" target="_blank" rel="noopener noreferrer">DISINI</a>
               </div>
             </template>
           </v-card>
