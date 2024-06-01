@@ -121,7 +121,7 @@ import { ref, onMounted } from 'vue';
 const trackingNumber = ref('');
 const overlay = ref(false);
 const trackingCourier = ref('');
-const apiKey = ref('7de29e329de36eba956b7b53e85d1ec663bc04449a1a2d2fefcccc4641257312ybap');
+const apiKey = ref('7de29e329de36eba956b7b53e85d1ec663bc04449a1a2d2fefcccc4641257312');
 const packageInfo = ref(null);
 const remainingQuota = ref(null);
 const totalChecked = ref(null);

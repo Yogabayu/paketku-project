@@ -17,7 +17,7 @@
                 Jelajahi aplikasi yang berguna bagi manusia
               </div>
               <div class="text-subtitle-1">
-                Menyukai Aplikasi ini ? donasi yuk di <a href="http://saweria.co/yogabayuap" target="_blank" rel="noopener noreferrer">DISINI</a>
+                Menyukai Aplikasi ini ? agar server dapat digunakan terus, yuk donasi di <a href="http://saweria.co/yogabayuap" target="_blank" rel="noopener noreferrer">DISINI</a>
               </div>
             </template>
           </v-card>
