@@ -30,10 +30,11 @@
             <v-overlay opacity=".06" scrim="primary" contained model-value persistent />
           </v-card>
         </v-col>
+
         <v-col cols="12" md="6">
           <v-card class="py-4" color="surface-variant" prepend-icon="fas fa-question" rel="noopener noreferrer" rounded="lg"
             text="Fitur yang lain masih proses"
-            target="_blank" title="Lainnya" variant="text" >
+            target="_blank" title="Lainnya" variant="text" @click="onprogress">
             <v-overlay opacity=".06" scrim="primary" contained model-value persistent />
           </v-card>
         </v-col>
