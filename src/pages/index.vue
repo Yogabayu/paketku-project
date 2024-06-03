@@ -24,9 +24,17 @@
         </v-col>
 
         <v-col cols="12" md="6">
-          <v-card class="py-4" color="surface-variant" prepend-icon="fas fa-box" rel="noopener noreferrer" rounded="lg"
+          <v-card class="py-4" color="surface-variant" prepend-icon="fas fa-box" rel="noopener noreferrer" rounded="lg" height="200"
             text="Lacak paket anda secara cepat dan mudah, yang didukung oleh lebih dari 10 jasa pengiriman"
-            target="_blank" title="Lacak Paket" variant="text" @click="showalert">
+            target="_blank" title="Lacak Paket" variant="text" @click="go('package')">
+            <v-overlay opacity=".06" scrim="primary" contained model-value persistent />
+          </v-card>
+        </v-col>
+
+        <v-col cols="12" md="6">
+          <v-card class="py-4" color="surface-variant" prepend-icon="fas fa-motorcycle" rel="noopener noreferrer" rounded="lg" height="200"
+            text="Lacak Ongkir paket anda sampai tingkat kabupaten"
+            target="_blank" title="Cek Ongkir" variant="text" @click="go('ongkir')">
             <v-overlay opacity=".06" scrim="primary" contained model-value persistent />
           </v-card>
         </v-col>
@@ -46,18 +54,11 @@
 </template>
 
 <script setup>
-import { useTheme } from "vuetify";
 import { useRouter } from 'vue-router';
 
-const theme = useTheme();
 const router = useRouter();
-
-function toggleTheme() {
-  theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
-}
-
-function showalert() {
-  router.push('/package');
+function go(to) {
+    router.push(`/${to}`);
 }
 
 function onprogress() {

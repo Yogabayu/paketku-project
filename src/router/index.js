@@ -28,6 +28,16 @@ const router = createRouter({
           component: () => import('@/pages/package.vue')
         }
       ]
+    },
+    {
+      path: '/ongkir',
+      component: () => import('@/layouts/default.vue'),
+      children: [
+        {
+          path: '',
+          component: () => import('@/pages/ongkir.vue')
+        }
+      ]
     }
   ]
 })

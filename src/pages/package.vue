@@ -5,7 +5,6 @@
         Loading...
     </v-overlay>
     <v-container class="fill-height">
-
         <v-responsive :aspect-ratio="16 / 9" class="border pa-4">
             <v-card>
                 <v-card-title>
@@ -108,10 +107,8 @@
                     </v-timeline>
                 </v-card-text>
             </v-card>
-
         </v-responsive>
     </v-container>
-
 </template>
 
 <script setup>
@@ -267,7 +264,7 @@ const checkQuota = async () => {
 // onMounted(async () => {
 //     await checkQuota();
 // });
-// </script>
+</script>
 
 
 <style>
