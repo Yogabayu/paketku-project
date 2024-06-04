@@ -70,22 +70,24 @@
 
             </v-card>
             <v-card class="mx-auto my-2" v-if="!error && result">
-                <v-card-text>
-                    <div class="font-weight-bold ms-1 mb-2">Today</div>
-
-                    <v-timeline align="start" density="compact">
-                        <v-timeline-item v-for="(message, index) in packageInfo.data.history" :key="message.date"
-                            :dot-color="index === 0 ? 'yellow' : 'green'" size="x-small">
-                            <div class="mb-4">
-                                <div class="font-weight-normal">
-                                    <strong>{{ message.date }}</strong>
-                                </div>
-
-                                <div>{{ message.desc }}</div>
-                            </div>
-                        </v-timeline-item>
-                    </v-timeline>
-                </v-card-text>
+                <v-container>
+                    <v-row>
+                        <v-col v-for="(cost, index) in result.data.costs" :key="index" cols="12" sm="6" md="4">
+                            <v-card>
+                                <v-card-title>
+                                    {{ cost.name }} - {{ cost.service }}
+                                </v-card-title>
+                                <v-card-subtitle>
+                                    {{ cost.type }}
+                                </v-card-subtitle>
+                                <v-card-text>
+                                    <div><strong>Price:</strong> {{ formatPrice(cost.price) }}</div>
+                                    <div><strong>Estimated Delivery:</strong> {{ cost.estimated }}</div>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                </v-container>
             </v-card>
         </v-responsive>
     </v-container>
@@ -93,6 +95,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+const apiKey = import.meta.env.VITE_API_KEY;
 const origin = ref('');
 const target = ref('');
 const weight = ref('');
@@ -131,12 +135,19 @@ const allTrackCourier = [
     },
 ];
 
+const formatPrice = (price) => {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR'
+    }).format(price);
+};
+
 const checkOngkir = async () => {
     try {
-        error.value ='';
+        error.value = '';
         result.value = null;
         overlay.value = true;
-        const response = await fetch(`https://api.binderbyte.com/v1/cost?api_key=7de29e329de36eba956b7b53e85d1ec663bc04449a1a2d2fefcccc4641257312&courier=${trackingCourier.value.value}&origin=${origin.value}&destination=${target.value}&weight=${weight.value}`);
+        const response = await fetch(`${apiUrl}cost?api_key=${apiKey}&courier=${trackingCourier.value.value}&origin=${origin.value}&destination=${target.value}&weight=${weight.value}`);
 
         if (response.status === 400) {
             error.value = 'Data not found';

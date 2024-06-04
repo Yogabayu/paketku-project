@@ -118,7 +118,8 @@ import { ref, onMounted } from 'vue';
 const trackingNumber = ref('');
 const overlay = ref(false);
 const trackingCourier = ref('');
-const apiKey = ref('7de29e329de36eba956b7b53e85d1ec663bc04449a1a2d2fefcccc4641257312');
+const apiUrl = import.meta.env.VITE_API_URL;
+const apiKey = import.meta.env.VITE_API_KEY;
 const packageInfo = ref(null);
 const remainingQuota = ref(null);
 const totalChecked = ref(null);
@@ -230,7 +231,7 @@ const checkPackage = async () => {
     }
 
     try {
-        const response = await fetch(`https://api.binderbyte.com/v1/track?api_key=${apiKey.value}&courier=${trackingCourier.value.value}&awb=${trackingNumber.value}`);
+        const response = await fetch(`${apiUrl}track?api_key=${apiKey}&courier=${trackingCourier.value.value}&awb=${trackingNumber.value}`);
         if (response.status == 400) {
             error.value = 'Data not found';
             overlay.value = false;
@@ -250,7 +251,7 @@ const checkPackage = async () => {
 
 const checkQuota = async () => {
     try {
-        const response = await fetch(`https://api.binderbyte.com/v1/checkQuota?api_key=${apiKey.value}`);
+        const response = await fetch(`${apiUrl}checkQuota?api_key=${apiKey}`);
         const accData = await response.json();
         remainingQuota.value = Math.round(accData[0].balance / accData[0].price);
         totalChecked.value = accData[0].count;

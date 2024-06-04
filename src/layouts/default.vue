@@ -13,7 +13,7 @@
                 <span>Cek Paket</span>
             </v-btn>
             <v-btn value="ongkir" @click="go('ongkir')">
-                <v-icon icon="fas fa-box"></v-icon>
+                <v-icon icon="fas fa-motorcycle"></v-icon>
                 <span>Cek Ongkir</span>
             </v-btn>
         </v-bottom-navigation>
